@@ -1,11 +1,11 @@
-import { Menu, MenuProps, Typography } from "antd";
+import { Avatar, Menu, MenuProps, Space, Typography } from "antd";
 import {
   AppstoreOutlined,
   MailOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
 import { useMemo, useState } from "react";
-
+import { UserOutlined } from "@ant-design/icons";
 import "./Navbar.css";
 import clsx from "clsx";
 import { Page } from "./Page";
@@ -84,13 +84,17 @@ export const Navbar = (): JSX.Element => {
       },
       {
         label: (
-          <a href={pageConfiguration[PageKeyEnum.MY_ACCOUNT].path}>
-            {pageConfiguration[PageKeyEnum.MY_ACCOUNT].label}
-          </a>
+          <>
+            <a href={pageConfiguration[PageKeyEnum.MY_ACCOUNT].path}>
+              <Space direction="horizontal" size="small" className="full-width">
+                <Typography.Text>Mon compte</Typography.Text>
+                <Avatar shape="square" size={32} icon={<UserOutlined />} />
+              </Space>
+            </a>
+          </>
         ),
         type: "item",
         key: pageConfiguration[PageKeyEnum.MY_ACCOUNT].keyEnum,
-        icon: <AppstoreOutlined />,
         className: rightItemClassName,
       },
     ];
