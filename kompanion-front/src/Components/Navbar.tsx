@@ -1,21 +1,24 @@
 import { Avatar, Menu, MenuProps, Space, Typography } from "antd";
-import {
-  AppstoreOutlined,
-  MailOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import { useMemo, useState } from "react";
+import { AppstoreOutlined } from "@ant-design/icons";
+import { useEffect, useMemo } from "react";
 import { UserOutlined } from "@ant-design/icons";
 import "./Navbar.css";
 import clsx from "clsx";
-import { Page } from "./Page";
-import { Dashboard } from "../Pages/Dashboard";
-import path from "path";
 import { PageKeyEnum, pageConfiguration } from "../Router";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  NavigationState,
+  userUpdatePageAction,
+} from "../Stores/NavigationSlice";
+import { RootState } from "../Stores/store";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
 export const Navbar = (): JSX.Element => {
+  const dispatch = useDispatch();
+  const navigationState: NavigationState = useSelector(
+    (state: RootState) => state.navigation
+  );
   const menuClassName = clsx("kom-c-menu");
   const leftItemClassName = clsx("kom-c-menu-item");
   const rightItemClassName = clsx("kom-c-menu-item", "kom-c-menu-item--right");
@@ -98,16 +101,27 @@ export const Navbar = (): JSX.Element => {
     ];
   }, []);
 
-  const [current, setCurrent] = useState("mail");
-
   const handleOnClick: MenuProps["onClick"] = (e) => {
-    setCurrent(e.key);
+    dispatch(userUpdatePageAction(e.key as PageKeyEnum));
   };
+
+  useEffect(() => {
+    const url = window.location.pathname;
+    const pageKey = Object.keys(pageConfiguration).find((key) => {
+      return pageConfiguration[key as PageKeyEnum].path === url;
+    });
+
+    if (pageKey) {
+      dispatch(
+        userUpdatePageAction(pageConfiguration[pageKey as PageKeyEnum].keyEnum)
+      );
+    }
+  }, []);
 
   return (
     <Menu
       className={menuClassName}
-      selectedKeys={[current]}
+      selectedKeys={[navigationState.page as string]}
       mode="horizontal"
       items={items}
       onClick={handleOnClick}
