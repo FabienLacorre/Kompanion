@@ -1,0 +1,23 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+kompanion-front/node_modules
+kompanion-front/.pnp
+kompanion-front/.pnp.js
+
+# testing
+kompanion-front/coverage
+
+# production
+kompanion-front/build
+
+# misc
+kompanion-front/.DS_Store
+kompanion-front/.env.local
+kompanion-front/.env.development.local
+kompanion-front/.env.test.local
+kompanion-front/.env.production.local
+
+kompanion-front/npm-debug.log*
+kompanion-front/yarn-debug.log*
+kompanion-front/yarn-error.log*
