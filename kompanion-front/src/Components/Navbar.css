@@ -1,0 +1,12 @@
+.kom-c-menu {
+  display: block;
+}
+
+.kom-c-menu-item {
+  line-height: 64px;
+  user-select: none;
+}
+
+.kom-c-menu-item--right {
+  float: right;
+}

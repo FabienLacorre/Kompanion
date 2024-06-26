@@ -1,16 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { addFetchCaseFormSingleEntityStoreWithCache } from "./singleEntitySliceManagement";
+import { createUserThunk, loginThunk } from "../Thunks/userThunks";
+import { SingleEntityCustomSlice } from "./Slice";
 
 // INITIAL STATES
 export interface UserState {
   email: string;
   password: string;
-  loggedIn: boolean;
+  firstName: string;
+  lastName: string;
+  id: number;
 }
 
-const userInitialState: UserState = {
-  email: "",
-  password: "",
-  loggedIn: false,
+const userInitialState: SingleEntityCustomSlice<UserState> = {
+  data: {
+    id: 0,
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+  },
+  metaData: {},
 };
 
 // SLICE
@@ -18,26 +28,18 @@ export const userSlice = createSlice({
   name: "user",
   initialState: userInitialState,
   reducers: {
-    updateEmail: (state, action: { type: string; payload: string }) => {
-      state.email = action.payload;
+    updateUser: (state, action: { type: string; payload: UserState }) => {
+      state.data.email = action.payload.email;
+      state.data.password = action.payload.password;
+      state.data.firstName = action.payload.firstName;
+      state.data.lastName = action.payload.lastName;
+      state.data.id = action.payload.id;
     },
-    updatePassword: (state, action: { type: string; payload: string }) => {
-      state.password = action.payload;
-    },
-    login: (state) => {
-      console.log("login action");
-      state.loggedIn = true;
-    },
-    logout: (state) => {
-      console.log("logout action");
-      state.loggedIn = false;
-    },
+  },
+  extraReducers: (builder) => {
+    addFetchCaseFormSingleEntityStoreWithCache<UserState>(builder, loginThunk);
+    addFetchCaseFormSingleEntityStoreWithCache<UserState>(builder, createUserThunk);
   },
 });
 
-export const {
-  updateEmail: userUpdateEmailAction,
-  updatePassword: userUpdatePasswordAction,
-  login: userLoginAction,
-  logout: userLogoutAction,
-} = userSlice.actions;
+export const { updateUser: userUpdateAction } = userSlice.actions;

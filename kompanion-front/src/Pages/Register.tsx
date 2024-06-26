@@ -6,13 +6,13 @@ import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../Stores/store";
 import { useNavigate } from "react-router-dom";
 import { pageConfiguration, PageKeyEnum } from "../Router";
-import { loginThunk } from "../Thunks/userThunks";
+import { createUserThunk } from "../Thunks/userThunks";
 import { useEffect } from "react";
 import { ApiStatus } from "../Types/ApiStatus";
 
-export const Login = (): JSX.Element => {
-  const dispatch = useAppDispatch();
+export const Register = (): JSX.Element => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const userState: UserState = useSelector(
     (state: RootState) => state.user.data
@@ -20,8 +20,6 @@ export const Login = (): JSX.Element => {
   const userStateApiStatus = useSelector(
     (state: RootState) => state.user.metaData.apiStatus
   );
-
-  console.log(userState);
 
   const contentClassName = clsx("content", "full-height", "align-center");
 
@@ -35,17 +33,12 @@ export const Login = (): JSX.Element => {
 
   const handleSubmitLoginClick = () => {
     dispatch(
-      loginThunk({ email: userState.email, password: userState.password })
+      createUserThunk({ email: userState.email, password: userState.password })
     );
   };
 
-  const handleForgotPasswordClick = () => {
-    // TODO: implement forgot password
-    alert("not implemented yet");
-  };
-
-  const handleNoAccountClick = () => {
-    navigate(pageConfiguration[PageKeyEnum.REGISTER].path);
+  const handleAlreadyGotAccountClick = () => {
+    navigate(pageConfiguration[PageKeyEnum.LOGIN].path);
   };
 
   useEffect(() => {
@@ -63,12 +56,12 @@ export const Login = (): JSX.Element => {
               <Space direction="vertical" className="full-width">
                 {/* Email */}
                 <Input
+                  type="email"
                   value={userState.email}
                   onChange={handleChangeEmail}
                   placeholder="Email"
                   size="large"
                   className="full-width"
-                  type="email"
                 />
                 {/* Password */}
                 <Input
@@ -81,27 +74,24 @@ export const Login = (): JSX.Element => {
 
                 {userStateApiStatus === ApiStatus.FAILED && (
                   <Typography.Text type="danger">
-                    Email ou mot de passe incorrect
+                    Cet email est deja utilisé
                   </Typography.Text>
                 )}
               </Space>
+
               <Space direction="vertical" className="full-width">
                 {/* Submit */}
                 <Button size="large" type="primary" htmlType="submit" block>
-                  Connexion
+                  Valider
                 </Button>
                 {/* New account */}
                 <Button
-                  onClick={handleNoAccountClick}
+                  onClick={handleAlreadyGotAccountClick}
                   size="large"
                   htmlType="button"
                   block
                 >
-                  Pas encore de compte ?
-                </Button>
-                {/* Forgot password */}
-                <Button onClick={handleForgotPasswordClick} type="link">
-                  Mot de passe oublié
+                  Vous avez deja un compte ?
                 </Button>
               </Space>
             </Space>
