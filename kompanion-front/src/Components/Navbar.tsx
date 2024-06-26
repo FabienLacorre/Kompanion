@@ -84,14 +84,12 @@ export const Navbar = (): JSX.Element => {
       },
       {
         label: (
-          <>
-            <a href={pageConfiguration[PageKeyEnum.MY_ACCOUNT].path}>
-              <Space direction="horizontal" size="small" className="full-width">
-                <Typography.Text>Mon compte</Typography.Text>
-                <Avatar shape="square" size={32} icon={<UserOutlined />} />
-              </Space>
-            </a>
-          </>
+          <a href={pageConfiguration[PageKeyEnum.MY_ACCOUNT].path}>
+            <Space direction="horizontal" size="small" className="full-width">
+              <Typography.Text>Mon compte</Typography.Text>
+              <Avatar shape="square" size={32} icon={<UserOutlined />} />
+            </Space>
+          </a>
         ),
         type: "item",
         key: pageConfiguration[PageKeyEnum.MY_ACCOUNT].keyEnum,
