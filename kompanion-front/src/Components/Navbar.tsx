@@ -5,17 +5,17 @@ import { UserOutlined } from "@ant-design/icons";
 import "./Navbar.css";
 import clsx from "clsx";
 import { PageKeyEnum, pageConfiguration } from "../Router";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   NavigationState,
   userUpdatePageAction,
 } from "../Stores/NavigationSlice";
-import { RootState } from "../Stores/store";
+import { RootState, useAppDispatch } from "../Stores/store";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
 export const Navbar = (): JSX.Element => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigationState: NavigationState = useSelector(
     (state: RootState) => state.navigation
   );
@@ -82,6 +82,16 @@ export const Navbar = (): JSX.Element => {
           </a>
         ),
         key: pageConfiguration[PageKeyEnum.MY_BUDGET].keyEnum,
+        icon: <AppstoreOutlined />,
+        className: leftItemClassName,
+      },
+      {
+        label: (
+          <a href={pageConfiguration[PageKeyEnum.TEST_PAGE].path}>
+            {pageConfiguration[PageKeyEnum.TEST_PAGE].label}
+          </a>
+        ),
+        key: pageConfiguration[PageKeyEnum.TEST_PAGE].keyEnum,
         icon: <AppstoreOutlined />,
         className: leftItemClassName,
       },

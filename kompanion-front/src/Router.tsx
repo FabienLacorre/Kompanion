@@ -9,6 +9,7 @@ import { MyStocks } from "./Pages/MyStocks";
 import { MyReminders } from "./Pages/MyReminders";
 import { MyBudget } from "./Pages/MyBudget";
 import { MyAccount } from "./Pages/MyAccount";
+import { TestPage } from "./Pages/TestPage";
 
 export enum PageKeyEnum {
   LOGIN = "LOGIN",
@@ -19,6 +20,7 @@ export enum PageKeyEnum {
   MY_REMINDERS = "MY_REMINDERS",
   MY_BUDGET = "MY_BUDGET",
   MY_ACCOUNT = "MY_ACCOUNT",
+  TEST_PAGE = "TEST_PAGE",
 }
 
 export const pageConfiguration = {
@@ -68,6 +70,13 @@ export const pageConfiguration = {
     path: "/my-budget",
     label: "Mon budget",
     Content: <MyBudget />,
+    withNavbar: true,
+  },
+  [PageKeyEnum.TEST_PAGE]: {
+    keyEnum: PageKeyEnum.TEST_PAGE,
+    path: "/test-page",
+    label: "Page de test",
+    Content: <TestPage />,
     withNavbar: true,
   },
   [PageKeyEnum.MY_ACCOUNT]: {

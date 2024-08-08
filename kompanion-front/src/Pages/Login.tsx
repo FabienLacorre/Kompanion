@@ -6,13 +6,13 @@ import {
   userUpdateEmailAction,
   userUpdatePasswordAction,
 } from "../Stores/UserSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../Stores/store";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../Stores/store";
 import { useNavigate } from "react-router-dom";
 
 export const Login = (): JSX.Element => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const userState: UserState = useSelector((state: RootState) => state.user);
 
   const contentClassName = clsx("content", "full-height", "align-center");
