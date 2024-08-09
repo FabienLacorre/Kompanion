@@ -6,6 +6,7 @@ import { RootState, useAppDispatch } from "../Stores/store";
 import { DummyData, dummyDataUpdateIdAction } from "../Stores/DummyDataSlice";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { ApiStatus } from "../Types/ApiStatus";
 
 export const TestPage = (): JSX.Element => {
   const contentClassName = clsx("content", "full-height");
@@ -22,6 +23,7 @@ export const TestPage = (): JSX.Element => {
   }, []);
 
   const handleSearchButton = () => {
+    dispatch(dummyDataUpdateIdAction(localInputId));
     dispatch(fetchDummyDateById(localInputId));
   };
 
@@ -49,7 +51,9 @@ export const TestPage = (): JSX.Element => {
               value={localInputId}
               onChange={handleChangeIdInput}
             />
-            <Button type="primary">Search</Button>
+            <Button htmlType="submit" type="primary">
+              Search
+            </Button>
           </Space>
         </form>
 
@@ -61,6 +65,7 @@ export const TestPage = (): JSX.Element => {
             `userId: ${dummyDataState.userId}`,
             `title: ${dummyDataState.title}`,
             `completed: ${dummyDataState.completed}`,
+            `status: ${dummyDataState.status}`,
           ]}
           renderItem={(item) => <List.Item>{item}</List.Item>}
         />

@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchDummyDateById } from "../Thunks/DummyDataThunks";
+import { ApiStatus } from "../Types/ApiStatus";
 
 export interface DummyData {
   userId: number;
   id: number;
   title: string;
   completed: boolean;
+  status: ApiStatus;
 }
 
 export const dummyDataInitialState: DummyData = {
@@ -13,6 +15,7 @@ export const dummyDataInitialState: DummyData = {
   userId: 0,
   title: "",
   completed: false,
+  status: ApiStatus.IDLE,
 };
 
 export const dummyDataSlice = createSlice({
@@ -31,11 +34,20 @@ export const dummyDataSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchDummyDateById.fulfilled, (state, action) => {
-      console.log("action", action);
+      state.status = ApiStatus.SUCCEEDED;
       state.userId = action.payload.userId;
       state.id = action.payload.id;
       state.title = action.payload.title;
       state.completed = action.payload.completed;
+    });
+    builder.addCase(fetchDummyDateById.pending, (state, action) => {
+      state.status = ApiStatus.LOADING;
+    });
+    builder.addCase(fetchDummyDateById.rejected, (state, action) => {
+      state.status = ApiStatus.FAILED;
+      state.title = action.error.message || "";
+      state.completed = false;
+      state.userId = -1;
     });
   },
 });
