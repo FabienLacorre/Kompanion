@@ -2,12 +2,16 @@ import { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 import { ApiStatus } from "../Types/ApiStatus";
 import { MultipleEntitiesCustomSlice } from "./Slice";
 import { orderBy } from "lodash";
+import { SINGLE_ENTITY_ID_DETECTION } from "../const";
 
 function addFullfilledCaseMultipleEntities<T>(
   state: MultipleEntitiesCustomSlice<T>,
   action: any
 ) {
-  const id = action.payload.id;
+  const id = state.idList.includes(SINGLE_ENTITY_ID_DETECTION)
+    ? SINGLE_ENTITY_ID_DETECTION
+    : action.payload.id ?? SINGLE_ENTITY_ID_DETECTION;
+
   if (!state.idList.includes(id)) {
     state.idList = orderBy([...state.idList, id]);
   }
@@ -31,18 +35,28 @@ function addRejectedCaseMultipleEntities<T>(
   state: MultipleEntitiesCustomSlice<T>,
   action: any
 ) {
-  state.dataMap[action.meta.arg.id].metaData = {
+  const id = state.idList.includes(SINGLE_ENTITY_ID_DETECTION)
+    ? SINGLE_ENTITY_ID_DETECTION
+    : action.payload.id ?? SINGLE_ENTITY_ID_DETECTION;
+  state.dataMap[id].metaData = {
     apiStatus: ApiStatus.FAILED,
   };
 }
 
-function addPendingCaseMultipleEntities<T>(state: MultipleEntitiesCustomSlice<T>, action: any) {
-  if (state.dataMap[action.meta.arg.id]) {
-    state.dataMap[action.meta.arg.id].metaData = {
+function addPendingCaseMultipleEntities<T>(
+  state: MultipleEntitiesCustomSlice<T>,
+  action: any
+) {
+  const id = state.idList.includes(SINGLE_ENTITY_ID_DETECTION)
+    ? SINGLE_ENTITY_ID_DETECTION
+    : action.meta.arg.id ?? SINGLE_ENTITY_ID_DETECTION;
+
+  if (state.dataMap[id]) {
+    state.dataMap[id].metaData = {
       apiStatus: ApiStatus.LOADING,
     };
   } else {
-    state.dataMap[action.meta.arg.id] = {
+    state.dataMap[id] = {
       data: {} as T,
       metaData: {
         apiStatus: ApiStatus.LOADING,

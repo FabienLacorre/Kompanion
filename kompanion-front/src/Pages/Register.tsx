@@ -2,25 +2,23 @@ import { Button, Card, Input, Layout, Space, Typography } from "antd";
 import { Content } from "antd/es/layout/layout";
 import clsx from "clsx";
 import { UserState, userUpdateAction } from "../Stores/UserSlice";
-import { useSelector } from "react-redux";
-import { RootState, useAppDispatch } from "../Stores/store";
 import { useNavigate } from "react-router-dom";
 import { pageConfiguration, PageKeyEnum } from "../Router";
 import { createUserThunk } from "../Thunks/userThunks";
 import { useEffect } from "react";
 import { ApiStatus } from "../Types/ApiStatus";
+import {
+  useSingleMetaDataSelector,
+  useSingleDataSelector,
+} from "../Stores/selectors";
+import { useAppDispatch } from "../Stores/store";
 
 export const Register = (): JSX.Element => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const userState: UserState = useSelector(
-    (state: RootState) => state.user.data
-  );
-  const userStateApiStatus = useSelector(
-    (state: RootState) => state.user.metaData.apiStatus
-  );
-
+  const userState: UserState = useSingleDataSelector<UserState>("user");
+  const userStateApiStatus = useSingleMetaDataSelector("user");
   const contentClassName = clsx("content", "full-height", "align-center");
 
   const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {

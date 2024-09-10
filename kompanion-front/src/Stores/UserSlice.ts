@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addFetchCaseFormSingleEntityStoreWithCache } from "./singleEntitySliceManagement";
 import { createUserThunk, loginThunk } from "../Thunks/userThunks";
-import { SingleEntityCustomSlice } from "./Slice";
+import { MultipleEntitiesCustomSlice, SingleEntityCustomSlice } from "./Slice";
+import { addFetchCasesForMultipleEntitiesStoreWithCache } from "./multipleEntitiesSliceManagement";
+import { SINGLE_ENTITY_ID_DETECTION } from "../const";
+import { ApiStatus } from "../Types/ApiStatus";
 
 // INITIAL STATES
 export interface UserState {
@@ -12,15 +14,27 @@ export interface UserState {
   id: number;
 }
 
-const userInitialState: SingleEntityCustomSlice<UserState> = {
-  data: {
-    id: 0,
-    email: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-  },
+const initialUserData = {
+  id: SINGLE_ENTITY_ID_DETECTION,
+  password: "",
+  email: "",
+  lastName: "",
+  firstName: "",
+};
+
+const initialUserMetaData = {
+  ApiStatus: ApiStatus.IDLE,
+};
+
+const userInitialState: MultipleEntitiesCustomSlice<UserState> = {
+  idList: [SINGLE_ENTITY_ID_DETECTION],
   metaData: {},
+  dataMap: {
+    [SINGLE_ENTITY_ID_DETECTION]: {
+      data: initialUserData,
+      metaData: initialUserMetaData,
+    },
+  },
 };
 
 // SLICE
@@ -29,16 +43,18 @@ export const userSlice = createSlice({
   initialState: userInitialState,
   reducers: {
     updateUser: (state, action: { type: string; payload: UserState }) => {
-      state.data.email = action.payload.email;
-      state.data.password = action.payload.password;
-      state.data.firstName = action.payload.firstName;
-      state.data.lastName = action.payload.lastName;
-      state.data.id = action.payload.id;
+      state.dataMap[action.payload.id].data = action.payload;
     },
   },
   extraReducers: (builder) => {
-    addFetchCaseFormSingleEntityStoreWithCache<UserState>(builder, loginThunk);
-    addFetchCaseFormSingleEntityStoreWithCache<UserState>(builder, createUserThunk);
+    addFetchCasesForMultipleEntitiesStoreWithCache<UserState>(
+      builder,
+      loginThunk
+    );
+    addFetchCasesForMultipleEntitiesStoreWithCache<UserState>(
+      builder,
+      createUserThunk
+    );
   },
 });
 

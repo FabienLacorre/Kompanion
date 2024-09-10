@@ -9,19 +9,18 @@ import { pageConfiguration, PageKeyEnum } from "../Router";
 import { loginThunk } from "../Thunks/userThunks";
 import { useEffect } from "react";
 import { ApiStatus } from "../Types/ApiStatus";
+import {
+  useSingleMetaDataSelector,
+  useSingleDataSelector,
+} from "../Stores/selectors";
 
 export const Login = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const userState: UserState = useSelector(
-    (state: RootState) => state.user.data
-  );
-  const userStateApiStatus = useSelector(
-    (state: RootState) => state.user.metaData.apiStatus
-  );
-
-  console.log(userState);
+  const userState: UserState = useSingleDataSelector<UserState>("user");
+  const userStateApiStatus = useSingleMetaDataSelector("user");
+  console.log("userState", userState);
 
   const contentClassName = clsx("content", "full-height", "align-center");
 

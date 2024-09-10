@@ -1,11 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { userSlice } from "./UserSlice";
-import { navigationSlice } from "./NavigationSlice";
+import { userSlice, UserState } from "./UserSlice";
+import { navigationSlice, NavigationState } from "./NavigationSlice";
 import { useDispatch } from "react-redux";
-import { dummyDataSlice } from "./DummyDataSlice";
+import { DummyData, dummyDataSlice } from "./DummyDataSlice";
+import { MultipleEntitiesCustomSlice } from "./Slice";
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export interface ConfigureStoreEntitiesList {
+  user: MultipleEntitiesCustomSlice<UserState>;
+  dummyData: MultipleEntitiesCustomSlice<DummyData>;
+
+  // navigation:  NavigationState; // TODO: migrer le store navigation
+}
 
 export const store = configureStore({
   reducer: {
