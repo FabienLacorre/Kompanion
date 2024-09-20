@@ -1,8 +1,10 @@
 import { ActionReducerMapBuilder } from "@reduxjs/toolkit";
 import { ApiStatus } from "../Types/ApiStatus";
-import { MultipleEntitiesCustomSlice } from "./Slice";
+import {
+  MultipleEntitiesCustomSlice,
+  SINGLE_ENTITY_ID_DETECTION,
+} from "./Slice";
 import { orderBy } from "lodash";
-import { SINGLE_ENTITY_ID_DETECTION } from "../const";
 
 function addFullfilledCaseMultipleEntities<T>(
   state: MultipleEntitiesCustomSlice<T>,

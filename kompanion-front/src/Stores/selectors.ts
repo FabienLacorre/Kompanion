@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { ConfigureStoreEntitiesList, RootState } from "./store";
-import { SINGLE_ENTITY_ID_DETECTION } from "../const";
+import { SINGLE_ENTITY_ID_DETECTION } from "./Slice";
 
 export const useSingleDataSelector = <T>(
   sliceName: keyof ConfigureStoreEntitiesList

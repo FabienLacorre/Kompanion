@@ -1,1 +1,0 @@
-export const SINGLE_ENTITY_ID_DETECTION = -1;

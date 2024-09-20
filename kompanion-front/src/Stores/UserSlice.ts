@@ -1,8 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createUserThunk, loginThunk } from "../Thunks/userThunks";
-import { MultipleEntitiesCustomSlice, SingleEntityCustomSlice } from "./Slice";
+import {
+  generateSingleEntityInitialState,
+  SINGLE_ENTITY_ID_DETECTION,
+  SingleEntityCustomSlice,
+} from "./Slice";
 import { addFetchCasesForMultipleEntitiesStoreWithCache } from "./multipleEntitiesSliceManagement";
-import { SINGLE_ENTITY_ID_DETECTION } from "../const";
 import { ApiStatus } from "../Types/ApiStatus";
 
 // INITIAL STATES
@@ -26,16 +29,8 @@ const initialUserMetaData = {
   ApiStatus: ApiStatus.IDLE,
 };
 
-const userInitialState: MultipleEntitiesCustomSlice<UserState> = {
-  idList: [SINGLE_ENTITY_ID_DETECTION],
-  metaData: {},
-  dataMap: {
-    [SINGLE_ENTITY_ID_DETECTION]: {
-      data: initialUserData,
-      metaData: initialUserMetaData,
-    },
-  },
-};
+const userInitialState: SingleEntityCustomSlice<UserState> =
+  generateSingleEntityInitialState(initialUserData, initialUserMetaData);
 
 // SLICE
 export const userSlice = createSlice({
@@ -43,7 +38,8 @@ export const userSlice = createSlice({
   initialState: userInitialState,
   reducers: {
     updateUser: (state, action: { type: string; payload: UserState }) => {
-      state.dataMap[action.payload.id].data = action.payload;
+      console.log("toto", action.payload.id);
+      state.dataMap[SINGLE_ENTITY_ID_DETECTION].data = action.payload;
     },
   },
   extraReducers: (builder) => {
